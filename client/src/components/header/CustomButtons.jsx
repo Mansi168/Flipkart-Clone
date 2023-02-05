@@ -33,7 +33,7 @@ const CustomButtons = () => {
         <Wrapper>
             <LoginButton variant="contained">Login</LoginButton>
             <Typography style={{marginTop:3 , width:135}}>Become a Seller</Typography>
-            <Typography style={{marginTop:3 , width:125}}>More</Typography>
+            <Typography style={{marginTop:3 , width:135}}>More</Typography>
 
             <Container>
                 <ShoppingCart/>
