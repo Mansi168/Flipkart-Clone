@@ -1,5 +1,6 @@
-
+import { useState } from "react";
 import { Box, Dialog, TextField , Typography, Button, styled} from "@mui/material";
+import { authenticateSignup } from "../../service/api";
 
 const Component = styled(Box)`
     height: 90vh;
@@ -7,7 +8,7 @@ const Component = styled(Box)`
 `;
 const Image = styled(Box)`
     background: #2874f0 url(https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/login_img_c4a81e.png) center 85% no-repeat;
-    height: 90%;
+    height: 83%;
     width: 25%;
     padding: 45px 35px; 
     & > p, & > h5{
@@ -55,27 +56,84 @@ const CreateAccount = styled(Typography)`
     cursor: pointer;
 `;
 
+const accountInitialValues = { //initially login pass kra diya object bnakr
+    login : {
+        view : 'login',
+        heading : "Login",
+        subHeading : 'Get access to your orders, Wishlist and Recommendations'
+    },
+    signup : {
+        view : 'signup',
+        heading : "Looks like you're new here!",
+        subHeading : 'Sign up with your mobile number to get started'
+    }
+}
+
+const signupInitialValues = {
+    firstname: '',
+    lastname: '',
+    username: '',
+    email: '',
+    password: '',
+    phone: ''
+}
+
 const LoginDialog = ({open, setOpen}) => {
+
+    const [account, toggleAccount] = useState(accountInitialValues.login);
+    const [signup, setSignup] = useState(signupInitialValues);
+
     const handleClose = () =>{
         setOpen(false);
+        toggleAccount(accountInitialValues.login);
     }
+
+    const toggleSignup = () => {
+        toggleAccount(accountInitialValues.signup);
+    }
+
+    const onInputChange = (e) => {
+        setSignup({...signup, [e.target.name]: e.target.value})
+        
+    }
+
+    const signupUser = async () => {
+        let response = await authenticateSignup(signup);
+    }
+
     return(
         <Dialog open={open} onClose={handleClose} PaperProps={{ sx:{maxWidth: 'unset'}}}>
             <Component>
                 <Box style={{display:'flex' ,height:'100%'}}>
                     <Image>
-                        <Typography variant="h5">Login</Typography>
-                        <Typography style={{marginTop:20}}>Get access to your orders, Wishlist and Recommendations</Typography>
-                    </Image>    
-                    <Wrapper>    
-                        <TextField variant="standard" label="Enter Email/Mobile number"/>
-                        <TextField variant="standard" label="Enter Password"/>
-                        <Text>By continuing, you agree to Flipkart's terms of use and Privacy Policy</Text>
-                        <LoginButton>Login</LoginButton>
-                        <Typography style={{textAlign: 'center'}}>OR</Typography>
-                        <RequestOTP>Request OTP</RequestOTP>
-                        <CreateAccount>New to Flipkart? Create an account</CreateAccount>
-                    </Wrapper>   
+                        <Typography variant="h5">{account.heading}</Typography>
+                        <Typography style={{marginTop:20}}>{account.subHeading}</Typography>
+                    </Image> 
+                    {
+                        account.view === 'login' ?
+                        <Wrapper>    
+                            <TextField variant="standard" label="Enter Email/Mobile number"/>
+                            <TextField variant="standard" label="Enter Password"/>
+                            <Text>By continuing, you agree to Flipkart's terms of use and Privacy Policy</Text>
+                            <LoginButton>Login</LoginButton>
+                            <Typography style={{textAlign: 'center'}}>OR</Typography>
+                            <RequestOTP>Request OTP</RequestOTP>
+                            <CreateAccount onClick={() => toggleSignup()}>New to Flipkart? Create an account</CreateAccount>
+                        </Wrapper>  
+                        :
+                        <Wrapper>    
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name="firstname" label="Enter Firstname"/>
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name="lastname" label="Enter Lastname"/>
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name="username" label="Enter Username"/>
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name="email" label="Enter Email"/>
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name="password" label="Enter Password"/>
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name="phone" label="Enter Phone Number"/>
+                                                        
+                            <LoginButton onClick={() => signupUser()}>Continue</LoginButton>
+                            
+                        </Wrapper> 
+                    
+                    }
                 </Box>
             </Component>
         </Dialog>
