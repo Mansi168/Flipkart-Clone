@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
+//validation step necessary bcz data is coming from frontend
 const ProductSchema = new mongoose.Schema({
-    id: {
+    id: { //detailed validation
         type: String,
         required: true,
         unique: true,
@@ -15,6 +16,8 @@ const ProductSchema = new mongoose.Schema({
     discount: String,
     tagline: String
 });
+
+//iske bad model bnana h
 
 const Product = mongoose.model('product', ProductSchema);
 
