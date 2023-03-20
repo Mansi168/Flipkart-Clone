@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import Connection from './database/db.js';
 import DefaultData from './default.js';
 
-import router from './routes/route.js';
+import Router from './routes/route.js';
 
 
 const app = express();
@@ -16,7 +16,7 @@ dotenv.config();
 app.use(cors());
 app.use(bodyParser.json({extended: true})); //jo body aati h(request aati h that is post data ki body) wo json form m aati h
 app.use(bodyParser.urlencoded({extended: true})); 
-app.use('/', router);
+app.use('/', Router);
 
 const PORT = 8081;
 

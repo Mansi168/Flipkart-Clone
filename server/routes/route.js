@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 import { userSignup } from "../controller/user-controller.js"; //callback function
 
 const router = express.Router();

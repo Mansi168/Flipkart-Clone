@@ -5,7 +5,7 @@ export const userSignup = async (request, response) => {
 
         const exist = await User.findOne({username: request.body.username});
         if(exist){
-            response.status(401).json({message: 'Username already exist'});
+            return response.status(401).json({message: 'Username already exist'});
         }
 
         const user = request.body;
